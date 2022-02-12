@@ -1,0 +1,1 @@
+Attempts to fasten frequent actions of sfdx cli with python and local assumptions
