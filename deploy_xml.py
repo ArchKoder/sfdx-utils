@@ -17,9 +17,7 @@ def getLastModifiedFileName(targetDir):
     return files[0][0]
 
 if __name__ == "__main__":
-    #wd,manifestDir= 'getcwd()' , '/manifest/'
     wd,manifestDir= '.' , '/manifest/'
-    #projectName = wd[wd.rfind('/')+1:]
     username = input("enter org username/alias : ")
     targetDir = wd+manifestDir
     lastModifiedManifest = getLastModifiedFileName(targetDir)
