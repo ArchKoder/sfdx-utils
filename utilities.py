@@ -25,7 +25,7 @@ def getLastModifiedFileName(targetDir,fileType=''):
     return lastModifiedFileName
 
 def getManifestDir():
-    return getcwd +'/manifest/'
+    return getcwd() +'/manifest/'
 
 def getDefaultOrg():
     try:

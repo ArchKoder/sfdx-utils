@@ -1,1 +1,1 @@
-FILE_TYPE_XML='XML'
+FILE_TYPE_XML='xml'

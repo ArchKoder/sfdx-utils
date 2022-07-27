@@ -9,10 +9,10 @@ from utilities import getDefaultOrg
 if __name__ == "__main__":
     username = input("enter org username/alias : ")
     if (username==''):
-        userName = getDefaultOrg()
+        username = getDefaultOrg()
     targetDir = getManifestDir()
     lastModifiedManifest = getLastModifiedFileName(targetDir,FILE_TYPE_XML)
-    cmnd = forceSourceDeploy(username,lastModifiedManifest)
+    cmnd = forceSourceDeploy(username,targetDir+lastModifiedManifest)
     print(cmnd)
     run(cmnd,shell=True)
     print('deployed '+lastModifiedManifest+' at '+datetime.now().strftime("%H:%M:%S"))
