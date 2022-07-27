@@ -35,3 +35,15 @@ def getDefaultOrg():
 
     except:
         return ''
+
+def mergeManifests(filenames,targetDir=None,finalFileName=None):
+    if(finalFileName==None):
+        finalFileName=filenames[0]
+
+    for filename in filenames:
+        filename = targetDir+filename
+        with open(filename,'r') as currentManifest:
+            manifestContent = currentManifest.read()
+            for line in manifestContent:
+                if '<types>' in line:
+                    pass
