@@ -3,3 +3,9 @@ def forceSourceDeploy(targetUsername,manifest):
     cmnd += ' --targetusername '+targetUsername
     cmnd += ' --manifest '+manifest
     return cmnd
+
+def forceRetrieveDeploy(targetUsername,manifest):
+    cmnd = 'sfdx force:source:retrieve'
+    cmnd += ' --targetusername '+targetUsername
+    cmnd += ' --manifest '+manifest
+    return cmnd
