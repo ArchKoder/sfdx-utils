@@ -1,6 +1,8 @@
 from os.path import getmtime as lastModifiedTime
 from os import listdir as listDir
 from os.path import isfile as isFile
+from os import getcwd
+from json import load
 
 def isFileTypeCorrect(fileName,fileType):
     try:
@@ -10,7 +12,7 @@ def isFileTypeCorrect(fileName,fileType):
     except:
         return False
 
-def getLastModifiedFileName(targetDir,fileType):
+def getLastModifiedFileName(targetDir,fileType=''):
 
     lastModifiedFileName = None
     tempLastModifiedTime = float('-inf')
@@ -21,3 +23,15 @@ def getLastModifiedFileName(targetDir,fileType):
                 tempLastModifiedTime = fileLastModifiedTime
                 lastModifiedFileName = fileName 
     return lastModifiedFileName
+
+def getManifestDir():
+    return getcwd +'/manifest/'
+
+def getDefaultOrg():
+    try:
+        with open('./.sfdx/sfdx-config.json') as sfdxConfig:
+            sfdxConfigJson = load(sfdxConfig)
+            return sfdxConfigJson['defaultusername']
+
+    except:
+        return ''

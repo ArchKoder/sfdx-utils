@@ -1,0 +1,1 @@
+FILE_TYPE_XML='XML'
