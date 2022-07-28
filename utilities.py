@@ -1,8 +1,13 @@
 from os.path import getmtime as lastModifiedTime
 from os import listdir as listDir
-from os.path import isfile as isFile
 from os import getcwd
 from json import load
+from sfdxUtilitesConstants import FILE_TYPE_XML, MANIFEST_XML
+from sfdxUtilitesConstants import MANIFEST_PACKAGE
+from sfdxUtilitesConstants import MANIFEST_PACKAGE_CLOSE
+from sfdxUtilitesConstants import MANIFEST_TYPES
+from sfdxUtilitesConstants import MANIFEST_TYPES_CLOSE
+from sfdxUtilitesConstants import MANIFEST_API_VERSION_53
 
 def isFileTypeCorrect(fileName,fileType):
     try:
@@ -36,14 +41,50 @@ def getDefaultOrg():
     except:
         return ''
 
-def mergeManifests(filenames,targetDir=None,finalFileName=None):
+def writeFile(fileLines,filename,targetDir,fileType,mode='a'):
+    with open(targetDir+filename+'.'+fileType,mode) as file:
+        file.writelines(line+'\n' for line in fileLines)
+
+
+def dictToManifest(manifestDict,filename,targetDir):
+    manifestLines = []
+    manifestLines.append(MANIFEST_XML)
+    manifestLines.append(MANIFEST_PACKAGE)
+
+    for name in manifestDict.keys():
+        manifestLines.append('\t'+MANIFEST_TYPES)
+
+        for member in manifestDict[name]:
+            manifestLines.append('\t\t'+member)
+        
+        manifestLines.append('\t\t'+name)
+        manifestLines.append('\t'+MANIFEST_TYPES_CLOSE)
+
+    manifestLines.append(MANIFEST_API_VERSION_53)
+    manifestLines.append(MANIFEST_PACKAGE_CLOSE)
+
+    writeFile(manifestLines,filename,targetDir,FILE_TYPE_XML,'w')
+
+
+def mergeManifests(filenames,targetDir,finalFileName=None):
     if(finalFileName==None):
         finalFileName=filenames[0]
 
-    for filename in filenames:
-        filename = targetDir+filename
-        with open(filename,'r') as currentManifest:
-            manifestContent = currentManifest.read()
-            for line in manifestContent:
-                if '<types>' in line:
-                    pass
+    if(len(filenames)>0):
+        finalManifest,memberSet = {},set()
+
+        for filename in filenames:
+            filename = targetDir+filename
+            with open(filename,'r') as currentManifest:
+                manifestContent = currentManifest.readlines()
+                for line in manifestContent:
+                    if '<members>' in line:
+                        memberSet.add(line.strip())
+                    if '<name>' in line:
+                        currentNameMembers = finalManifest.get(line.strip(),set())
+                        currentNameMembers = currentNameMembers.union(memberSet)
+                        finalManifest[line.strip()]=currentNameMembers
+                        memberSet=set()
+            
+        print(finalManifest)
+        dictToManifest(finalManifest,finalFileName,targetDir)
