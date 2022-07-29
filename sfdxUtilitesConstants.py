@@ -10,3 +10,5 @@ MANIFEST_NAME_CLOSE='</name>'
 MANIFEST_MEMBERS='<members>'
 MANIFEST_MEMBERS_CLOSE='</members>'
 MANIFEST_API_VERSION_53='<version>53.0</version>'
+
+SFDX_CONFIG_JSON_DEFAULTUSERNAME='defaultusername'

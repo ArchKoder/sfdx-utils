@@ -8,6 +8,9 @@ from sfdxUtilitesConstants import MANIFEST_PACKAGE_CLOSE
 from sfdxUtilitesConstants import MANIFEST_TYPES
 from sfdxUtilitesConstants import MANIFEST_TYPES_CLOSE
 from sfdxUtilitesConstants import MANIFEST_API_VERSION_53
+from sfdxUtilitesConstants import MANIFEST_MEMBERS
+from sfdxUtilitesConstants import MANIFEST_NAME
+from sfdxUtilitesConstants import SFDX_CONFIG_JSON_DEFAULTUSERNAME
 
 def isFileTypeCorrect(fileName,fileType):
     try:
@@ -36,7 +39,7 @@ def getDefaultOrg():
     try:
         with open('./.sfdx/sfdx-config.json') as sfdxConfig:
             sfdxConfigJson = load(sfdxConfig)
-            return sfdxConfigJson['defaultusername']
+            return sfdxConfigJson[SFDX_CONFIG_JSON_DEFAULTUSERNAME]
 
     except:
         return ''
@@ -65,6 +68,36 @@ def dictToManifest(manifestDict,filename,targetDir):
 
     writeFile(manifestLines,filename,targetDir,FILE_TYPE_XML,'w')
 
+def mergeManifestDicts(manifestA,manifestB):
+    """Return the dictionary after merging input ones."""
+    #assume manifestB is shorter and then correct
+    if(len(manifestA.keys())<len(manifestB.keys())):
+        manifestA,manifestB = manifestB,manifestA
+    
+    for key in manifestB.keys():
+        membersB = manifestB[key]
+        membersA = manifestA.get(key,set())
+        membersA = membersA.union(membersB)
+        manifestA[key]=membersA
+    
+    return manifestA
+
+
+def manifestToDict(targetDir,filename):
+    finalManifest,memberSet = {},set()
+    with open(targetDir+filename, 'r') as manifest:
+        manifestContent = manifest.readlines()
+        for line in manifestContent:
+            if MANIFEST_MEMBERS in line:
+                memberSet.add(line.strip())
+            if MANIFEST_NAME in line:
+                currentManifest = {}
+                currentManifest[line.strip()]=memberSet
+                finalManifest = mergeManifestDicts(finalManifest,currentManifest)
+                memberSet=set()
+
+    return finalManifest
+
 
 def mergeManifests(filenames,targetDir,finalFileName=None):
     if(finalFileName==None):
@@ -72,19 +105,8 @@ def mergeManifests(filenames,targetDir,finalFileName=None):
 
     if(len(filenames)>0):
         finalManifest,memberSet = {},set()
-
         for filename in filenames:
-            filename = targetDir+filename
-            with open(filename,'r') as currentManifest:
-                manifestContent = currentManifest.readlines()
-                for line in manifestContent:
-                    if '<members>' in line:
-                        memberSet.add(line.strip())
-                    if '<name>' in line:
-                        currentNameMembers = finalManifest.get(line.strip(),set())
-                        currentNameMembers = currentNameMembers.union(memberSet)
-                        finalManifest[line.strip()]=currentNameMembers
-                        memberSet=set()
-            
-        print(finalManifest)
+            currentManifest= manifestToDict(targetDir,filename)
+            finalManifest = mergeManifestDicts(finalManifest,currentManifest)
+
         dictToManifest(finalManifest,finalFileName,targetDir)
