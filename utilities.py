@@ -1,6 +1,7 @@
 from os.path import getmtime as lastModifiedTime
 from os import listdir as listDir
 from os import getcwd
+from os import walk
 from json import load
 from sfdxUtilitesConstants import FILE_TYPE_XML, MANIFEST_XML
 from sfdxUtilitesConstants import MANIFEST_PACKAGE
@@ -11,10 +12,12 @@ from sfdxUtilitesConstants import MANIFEST_API_VERSION_53
 from sfdxUtilitesConstants import MANIFEST_MEMBERS
 from sfdxUtilitesConstants import MANIFEST_NAME
 from sfdxUtilitesConstants import SFDX_CONFIG_JSON_DEFAULTUSERNAME
+from pandas import DataFrame
+from pandas import concat
 
-def isFileTypeCorrect(fileName,fileType):
+def isFileTypeCorrect(filename,fileType):
     try:
-        if(fileName.endswith(fileType)):
+        if(filename.endswith('.'+fileType)):
             return True
         return False
     except:
@@ -24,12 +27,12 @@ def getLastModifiedFileName(targetDir,fileType=''):
 
     lastModifiedFileName = None
     tempLastModifiedTime = float('-inf')
-    for fileName in listDir(targetDir):
-        if isFileTypeCorrect(fileName,fileType):
-            fileLastModifiedTime = lastModifiedTime(targetDir+'/'+fileName)
+    for filename in listDir(targetDir):
+        if isFileTypeCorrect(filename,fileType):
+            fileLastModifiedTime = lastModifiedTime(targetDir+'/'+filename)
             if fileLastModifiedTime > tempLastModifiedTime:
                 tempLastModifiedTime = fileLastModifiedTime
-                lastModifiedFileName = fileName 
+                lastModifiedFileName = filename 
     return lastModifiedFileName
 
 def getManifestDir():
@@ -110,3 +113,28 @@ def mergeManifests(filenames,targetDir,finalFileName=None):
             finalManifest = mergeManifestDicts(finalManifest,currentManifest)
 
         dictToManifest(finalManifest,finalFileName,targetDir)
+
+def fileSelector(targetDir,fileType,searchTerm=None):
+    indexToFileName ,index, dataLeft, dataRight= {},0,[],[]
+    for root, dirs, filenames in walk(targetDir):
+        for filename in filenames:
+            if (searchTerm==None) or (searchTerm in filename):
+                if isFileTypeCorrect(filename,fileType):
+                    indexToFileName[index]=filename
+                    if(index%2==0):
+                        dataLeft.append([index,filename])
+                    else:
+                        dataRight.append([index,filename])
+                    index+=1
+    
+    leftFileTable = DataFrame(dataLeft,columns=['Index','Filename'])
+    rightFileTable = DataFrame(dataRight,columns=['Index','Filename'])
+    print(concat([leftFileTable.reset_index(drop=1),rightFileTable.reset_index(drop=1)], axis=1).fillna('').to_string(index=False))
+
+    fileIndexList = input('\nEnter the space seperated numbers for files:\n\n')
+    fileIndexList = [int(index) for index in fileIndexList.split()]
+    filenameList = []
+    for index in indexToFileName.keys():
+        if (index in fileIndexList):
+            filenameList.append(indexToFileName[index])
+    return filenameList
