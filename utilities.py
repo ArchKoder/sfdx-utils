@@ -107,7 +107,7 @@ def mergeManifests(filenames,targetDir,finalFileName=None):
         finalFileName=filenames[0]
 
     if(len(filenames)>0):
-        finalManifest,memberSet = {},set()
+        finalManifest= {}
         for filename in filenames:
             currentManifest= manifestToDict(targetDir,filename)
             finalManifest = mergeManifestDicts(finalManifest,currentManifest)
