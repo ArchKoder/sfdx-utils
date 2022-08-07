@@ -10,6 +10,6 @@ Terminal Utilities to automate and expedite frequent sfdx cli actions.
 
 * Setting utilities up for each sfdx project should be made infinitely easier.
 Probable approaches:
-* * Files for each automation should be made as a single class, having project directort as a property which is set while terminal issues a command from a sfdx project.
+    * Files for each automation should be made as a single class, having project directort as a property which is set while terminal issues a command from a sfdx project.
 
-* * Turn sfdx utilites into a python module.
+    * Turn sfdx utilites into a python module.
