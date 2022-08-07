@@ -5,7 +5,9 @@ This repo is about using python with terminals to speed up some frequent tasks u
 
 * Install a version of python 3. I usually get around it using [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html) and set it as default.
 
-* Install pandas. So far pandas has been used in addition to built-ins. If you are using conda use ```conda install pandas```, if not set up pip and use ```pip install pandas```.You may have to install additional dependencies beforehand in latter case. 
+* Install pandas. So far pandas has been used in addition to built-ins. If you are using conda use ```conda install pandas```, if not set up pip and use ```pip install pandas```.You may have to install additional dependencies beforehand in latter case.
+
+* Project assumes contributors can set up sfdx projects for testing. [Help guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm) for the same.
 
 
 <ins>Examples of some cli operations</ins>:
@@ -23,3 +25,5 @@ Probable approaches:
     * Turn sfdx utilites into a python module.
 
     * Add optimum and precise comments to already existing code.
+
+    * Add tests for utilities class
