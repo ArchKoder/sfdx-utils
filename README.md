@@ -1,4 +1,12 @@
-Terminal Utilities to automate and expedite frequent sfdx cli actions.
+**Terminal Utilities to automate and expedite frequent sfdx cli actions**
+This repo is about using python with terminals to speed up some frequent tasks using sfdx cli during development of a salesforce 2nd Generation Project. Repo is primarily meant to be used with terminal and not any GUI aids but python is chosen over shells like bash so as to promote code portability among different shells and operating systems.
+
+<ins>Setup for project</ins>:
+
+* Install a version of python 3. I usually get around it using [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html) and set it as default.
+
+* Install pandas. So far pandas has been used in addition to built-ins. If you are using conda use ```conda install pandas```, if not set up pip and use ```pip install pandas```.You may have to install additional dependencies beforehand in latter case. 
+
 
 <ins>Examples of some cli operations</ins>:
 
@@ -14,4 +22,4 @@ Probable approaches:
 
     * Turn sfdx utilites into a python module.
 
-    * Add optimum comments to already existing code.
+    * Add optimum and precise comments to already existing code.
