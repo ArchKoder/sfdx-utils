@@ -13,3 +13,5 @@ Probable approaches:
     * Files for each automation should be made as a single class, having project directort as a property which is set while terminal issues a command from a sfdx project.
 
     * Turn sfdx utilites into a python module.
+
+    * Add optimum comments to already existing code.
