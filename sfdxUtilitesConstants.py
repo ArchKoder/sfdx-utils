@@ -11,4 +11,10 @@ MANIFEST_MEMBERS='<members>'
 MANIFEST_MEMBERS_CLOSE='</members>'
 MANIFEST_API_VERSION_53='<version>53.0</version>'
 
+SFDX="sfdx"
+FORCE_SOURCE_RETRIEVE = 'force:source:retrieve'
+FORCE_SOURCE_DEPLOY = 'force:source:deploy'
+MANIFEST = '--manifest'
+TARGETUSERNAME = '--targetusername'
+
 SFDX_CONFIG_JSON_DEFAULTUSERNAME='defaultusername'
