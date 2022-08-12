@@ -12,7 +12,7 @@ if __name__ == "__main__":
         username = getDefaultOrg()
     targetDir = getApexScriptDir()
     lastModifiedScript = getLastModifiedFileName(targetDir,FILE_TYPE_APEX)
-    cmnd = forceApexExecute(targetDir,lastModifiedScript)
+    cmnd = forceApexExecute(username,targetDir+lastModifiedScript)
     print(cmnd)
     run(cmnd,shell=True)
     print('ran '+lastModifiedScript+' at '+datetime.now().strftime("%H:%M:%S"))
