@@ -27,4 +27,4 @@ This repo is about using python with terminals to speed up some frequent tasks u
 
 * Add optimum and precise comments to already existing code.
 
-* Add tests for utilities class
+* Add unit tests for already existing code.
