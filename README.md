@@ -18,14 +18,13 @@ This repo is about using python with terminals to speed up some frequent tasks u
 
 <ins>Near Future (on Priority) Enhancements</ins>:
 
-* Setting utilities up for each sfdx project should be made infinitely easier.
-Probable approaches:
-    * Files for each automation should be made as a single class, having project directort as a property which is set while terminal issues a command from a sfdx project.
+* Setting utilities up for each sfdx project should be made infinitely easier. Possible approaches:
+    * Files for each automation should be merged as a single class, having project directory as a class property which is set when terminal issues a command from a sfdx project directory.
 
     * Turn sfdx utilites into a python module.
 
-    * Add optimum and precise comments to already existing code.
+    * Turn sfdx utilities into a cli.
 
-    * Add tests for utilities class
+* Add optimum and precise comments to already existing code.
 
-    * Fix file for execute anonymous scripts
+* Add unit tests for already existing code.
