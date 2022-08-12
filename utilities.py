@@ -23,6 +23,15 @@ def isFileTypeCorrect(filename,fileType):
     except:
         return False
 
+def concatenateStrings(stringList,escapeStringNumbers):
+    concatenatedString = ""
+    for stringOrder in range(len(stringList)):
+        if stringOrder in escapeStringNumbers:
+            concatenatedString += " '"+stringList[stringOrder]+"'"
+        else:
+            concatenatedString += " "+stringList[stringOrder]
+    return concatenatedString
+
 def getLastModifiedFileName(targetDir,fileType=''):
 
     lastModifiedFileName = None
@@ -138,12 +147,3 @@ def fileSelector(targetDir,fileType,searchTerm=None):
         if (index in fileIndexList):
             filenameList.append(indexToFileName[index])
     return filenameList
-
-def concatenateStrings(stringList,escapeStringNumbers):
-    concatenatedString = ""
-    for stringOrder in range(len(stringList)):
-        if stringOrder in escapeStringNumbers:
-            concatenatedString += " '"+stringList[stringOrder]+"'"
-        else:
-            concatenatedString += " "+stringList[stringOrder]
-    return concatenatedString
