@@ -47,6 +47,9 @@ def getLastModifiedFileName(targetDir,fileType=''):
 def getManifestDir():
     return getcwd() +'/manifest/'
 
+def getApexScriptDir():
+    return getcwd() +'/scripts/apex/'
+
 def getDefaultOrg():
     try:
         with open('./.sfdx/sfdx-config.json') as sfdxConfig:
