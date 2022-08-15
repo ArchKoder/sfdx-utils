@@ -3,6 +3,7 @@ from os import listdir as listDir
 from os import getcwd
 from os import walk
 from json import load
+from turtle import left
 from sfdxUtilitesConstants import FILE_TYPE_XML, MANIFEST_XML
 from sfdxUtilitesConstants import MANIFEST_PACKAGE
 from sfdxUtilitesConstants import MANIFEST_PACKAGE_CLOSE
@@ -127,21 +128,26 @@ def mergeManifests(filenames,targetDir,finalFileName=None):
         dictToManifest(finalManifest,finalFileName,targetDir)
 
 def fileSelector(targetDir,fileType,searchTerm=None):
-    indexToFileName ,index, dataLeft, dataRight= {},0,[],[]
+    indexToFileName ,index, data= {},1,{'Left Index':[],'Left Name':[],'Right Index':[],'Right Name':[]}
     for root, dirs, filenames in walk(targetDir):
         for filename in filenames:
             if (searchTerm==None) or (searchTerm in filename):
                 if isFileTypeCorrect(filename,fileType):
                     indexToFileName[index]=filename
-                    if(index%2==0):
-                        dataLeft.append([index,filename])
+                    if(index%2==1):
+                        data['Left Index'].append(index)
+                        data['Left Name'].append(filename)
                     else:
-                        dataRight.append([index,filename])
+                        data['Right Index'].append(index)
+                        data['Right Name'].append(filename)
                     index+=1
-    
-    leftFileTable = DataFrame(dataLeft,columns=['Index','Filename'])
-    rightFileTable = DataFrame(dataRight,columns=['Index','Filename'])
-    print(concat([leftFileTable.reset_index(drop=1),rightFileTable.reset_index(drop=1)], axis=1).fillna('').to_string(index=False))
+
+    if(index%2==0):
+        data['Right Index'].append('')
+        data['Right Name'].append('')
+
+    dataView = DataFrame(data)
+    print(dataView.to_string(index=False , justify=left))
 
     fileIndexList = input('\nEnter the space seperated numbers for files:\n\n')
     fileIndexList = [int(index) for index in fileIndexList.split()]
