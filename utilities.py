@@ -61,7 +61,9 @@ def getDefaultOrg():
         return ''
 
 def writeFile(fileLines,filename,targetDir,fileType,mode='a'):
-    with open(targetDir+filename+'.'+fileType,mode) as file:
+    if not isFileTypeCorrect(filename,fileType):
+        filename = filename+'.'+fileType
+    with open(targetDir+filename,mode) as file:
         file.writelines(line+'\n' for line in fileLines)
 
 
@@ -115,7 +117,7 @@ def manifestToDict(targetDir,filename):
     return finalManifest
 
 
-def mergeManifests(filenames,targetDir,finalFileName=None):
+def mergeManifests(filenames,targetDir,finalFileName):
     if(finalFileName==None):
         finalFileName=filenames[0]
 
@@ -127,7 +129,7 @@ def mergeManifests(filenames,targetDir,finalFileName=None):
 
         dictToManifest(finalManifest,finalFileName,targetDir)
 
-def fileSelector(targetDir,fileType,searchTerm=None):
+def fileSelector(targetDir,fileType,searchTerm,showFileTable,inputMessage):
     indexToFileName ,index, data= {},1,{'Left Index':[],'Left Name':[],'Right Index':[],'Right Name':[]}
     for root, dirs, filenames in walk(targetDir):
         for filename in filenames:
@@ -146,13 +148,24 @@ def fileSelector(targetDir,fileType,searchTerm=None):
         data['Right Index'].append('')
         data['Right Name'].append('')
 
-    dataView = DataFrame(data)
-    print(dataView.to_string(index=False , justify=left))
+    if(showFileTable):
+        dataView = DataFrame(data)
+        print(dataView.to_string(index=False , justify=left))
 
-    fileIndexList = input('\nEnter the space seperated numbers for files:\n\n')
-    fileIndexList = [int(index) for index in fileIndexList.split()]
+    fileIndexList = input('\n'+inputMessage+'\n\n')
+    fileIndexList = [safeIntegerConverter(index) for index in fileIndexList.split()]
+    print(fileIndexList)
     filenameList = []
+    """
     for index in indexToFileName.keys():
         if (index in fileIndexList):
             filenameList.append(indexToFileName[index])
-    return filenameList
+    """
+    
+    return (indexToFileName,fileIndexList)
+
+def safeIntegerConverter(value):
+    try:
+        return int(value)
+    except:
+        return str(value)
