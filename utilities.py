@@ -154,7 +154,6 @@ def fileSelector(targetDir,fileType,searchTerm,showFileTable,inputMessage):
 
     fileIndexList = input('\n'+inputMessage+'\n\n')
     fileIndexList = [safeIntegerConverter(index) for index in fileIndexList.split()]
-    print(fileIndexList)
     filenameList = []
     """
     for index in indexToFileName.keys():
