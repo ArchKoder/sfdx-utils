@@ -22,3 +22,5 @@ TARGETUSERNAME = '--targetusername'
 APEX_CODE_FILE = '--apexcodefile'
 
 SFDX_CONFIG_JSON_DEFAULTUSERNAME='defaultusername'
+
+ORG_USERNAME_ALIAS = 'Enter username or alias for org: '
