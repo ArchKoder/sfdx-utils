@@ -53,9 +53,12 @@ def getManifestDir(projectDir = None):
 def getApexScriptDir():
     return getcwd() +'/scripts/apex/'
 
-def getDefaultOrg():
+def getDefaultOrg(projectDir = None):
+    if(projectDir == None):
+        projectDir = './'
+
     try:
-        with open('./.sfdx/sfdx-config.json') as sfdxConfig:
+        with open(projectDir+'.sfdx/sfdx-config.json') as sfdxConfig:
             sfdxConfigJson = load(sfdxConfig)
             return sfdxConfigJson[SFDX_CONFIG_JSON_DEFAULTUSERNAME]
 
