@@ -45,8 +45,10 @@ def getLastModifiedFileName(targetDir,fileType=''):
                 lastModifiedFileName = filename 
     return lastModifiedFileName
 
-def getManifestDir():
-    return getcwd() +'/manifest/'
+def getManifestDir(projectDir = None):
+    if(projectDir == None):
+        projectDir = getcwd()
+    return projectDir +'/manifest/'
 
 def getApexScriptDir():
     return getcwd() +'/scripts/apex/'
