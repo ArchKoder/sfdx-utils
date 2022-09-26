@@ -14,7 +14,7 @@ from sfdxUtilitesConstants import MANIFEST_MEMBERS
 from sfdxUtilitesConstants import MANIFEST_NAME
 from sfdxUtilitesConstants import SFDX_CONFIG_JSON_DEFAULTUSERNAME
 from pandas import DataFrame
-from pandas import concat
+from pathlib import Path
 
 def isFileTypeCorrect(filename,fileType):
     try:
@@ -55,10 +55,10 @@ def getApexScriptDir():
 
 def getDefaultOrg(projectDir = None):
     if(projectDir == None):
-        projectDir = './'
+        projectDir = '.'
 
     try:
-        with open(projectDir+'.sfdx/sfdx-config.json') as sfdxConfig:
+        with open(projectDir+'/.sfdx/sfdx-config.json') as sfdxConfig:
             sfdxConfigJson = load(sfdxConfig)
             return sfdxConfigJson[SFDX_CONFIG_JSON_DEFAULTUSERNAME]
 
@@ -173,3 +173,10 @@ def safeIntegerConverter(value):
         return int(value)
     except:
         return str(value)
+
+def validPath(path):
+    try:
+        Path(path).resolve()
+        return True
+    except:
+        return False
