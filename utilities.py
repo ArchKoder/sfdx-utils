@@ -14,7 +14,6 @@ from sfdxUtilitesConstants import MANIFEST_MEMBERS
 from sfdxUtilitesConstants import MANIFEST_NAME
 from sfdxUtilitesConstants import SFDX_CONFIG_JSON_DEFAULTUSERNAME
 from pandas import DataFrame
-from pathlib import Path
 
 def isFileTypeCorrect(filename,fileType):
     try:
@@ -174,9 +173,3 @@ def safeIntegerConverter(value):
     except:
         return str(value)
 
-def validPath(path):
-    try:
-        Path(path).resolve()
-        return True
-    except:
-        return False

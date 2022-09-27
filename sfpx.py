@@ -4,12 +4,10 @@ from sfdxUtilitesConstants import FILE_TYPE_XML
 from utilities import getLastModifiedFileName
 from utilities import getManifestDir
 from utilities import getDefaultOrg
-from utilities import validPath
 from sfdxCommandFunctions import forceSourceDeploy
 from sfdxCommandFunctions import forceSourceRetrieve
 from subprocess import run
 from os import getcwd
-import sys
 from argparse import ArgumentParser
 class SFPXController:
     def __init__(this,projectDir) -> None:
