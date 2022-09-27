@@ -1,14 +1,20 @@
-from lib2to3.pgen2.grammar import opmap_raw
 from sfdxUtilitesConstants import ORG_USERNAME_ALIAS
 from sfdxUtilitesConstants import FILE_TYPE_XML
+from sfdxUtilitesConstants import FILE_TYPE_JSON
+from sfdxUtilitesConstants import OBJECT_API_NAME
 from utilities import getLastModifiedFileName
 from utilities import getManifestDir
 from utilities import getDefaultOrg
+from utilities import validateFilePaths
+from utilities import assertFormat
+from utilities import pandasImportHelper
 from sfdxCommandFunctions import forceSourceDeploy
 from sfdxCommandFunctions import forceSourceRetrieve
 from subprocess import run
 from os import getcwd
 from argparse import ArgumentParser
+from os.path import exists
+from json import load
 class SFPXController:
     def __init__(this,projectDir) -> None:
         this.projectDir = projectDir
@@ -34,6 +40,26 @@ class SFPXController:
         lastModifiedManifest = getLastModifiedFileName(targetDir,FILE_TYPE_XML)
         cmnd = forceSourceRetrieve(username,targetDir+lastModifiedManifest)
         run(cmnd,shell=True)
+
+    def scriptifyFlatFile(this,verbose = False):
+        filePath = input('Enter path for flat file: ')
+        filePath = validateFilePaths(filePath)
+
+        configFilePath = input('Enter paht for config file: ')
+        configFilePath = validateFilePaths(configFilePath)
+        assertFormat(configFilePath,FILE_TYPE_JSON)
+        configFile = open(configFilePath, 'r')
+        configFileJson = load(configFile)
+        configFile.close()
+
+        objectApiName = configFileJson[OBJECT_API_NAME]
+        contentDataFrame = pandasImportHelper(filePath)
+        fields = contentDataFrame.columns
+        field2type = dict()
+
+        for field in fields:
+            field2type = 
+
 
 if __name__ == "__main__":
     cli = ArgumentParser()
