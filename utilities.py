@@ -210,4 +210,14 @@ def pandasImportHelper(file):
         FILE_TYPE_XLSX : readExcel
     }
 
-    return format2Importer[fileFormat(file)](file)
+    importer = format2Importer.get(fileFormat(file),None)
+    if(importer == None):
+        raise Exception(INVALID_FILE_FORMAT)
+    else:
+        return importer(file)
+
+
+def assertFormat(file,formalFormat):
+    actualFormat = fileFormat(file)
+    if(actualFormat != formalFormat):
+        raise Exception(INVALID_FILE_FORMAT)
