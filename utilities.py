@@ -19,6 +19,7 @@ from pandas import DataFrame
 from pandas import read_csv as readCsv
 from pandas import read_excel as readExcel
 from os.path import exists
+from pathlib import Path
 
 def isFileTypeCorrect(filename,fileType):
     try:
@@ -179,22 +180,17 @@ def safeIntegerConverter(value):
         return str(value)
 
 def validateFilePaths(file):
-    if exists(file):
-        return file
-    else:
-        if exists(getcwd()+'/'+file):
-            return getcwd()+'/'+file
-        elif exists(getcwd()+'\\'+file):
-            return getcwd()+'\\'+file
-        elif exists(getcwd()+file):
-            return getcwd()+file
-        else:
-            raise Exception(INVALID_PATH)
+    """checks if given path is a valid file Path"""
+    try:
+        filePath = Path(file)
+        return filePath.is_file()
+    except:
+        return False
 
 
 def fileFormat(file):
     """returns file format for given path."""
-    if not(exists(file)):
+    if not validateFilePaths(file):
         raise Exception(INVALID_PATH)
     else:
         fileSplits = file.split('.')
