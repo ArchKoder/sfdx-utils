@@ -43,3 +43,4 @@ class Command:
             if(this.valueMap.get(argument,None)==None):
                 return True
         return False
+
