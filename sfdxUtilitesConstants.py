@@ -30,5 +30,6 @@ ORG_USERNAME_ALIAS = 'Enter username or alias for org: '
 
 INVALID_PATH = 'Invalid path for file or file not found'
 INVALID_FILE_FORMAT = 'Invalid or unsupported format for the file'
+DUPLICATE_ARGUMENTS = 'Duplicate arguments provided'
 
 OBJECT_API_NAME = 'objectApiName'
