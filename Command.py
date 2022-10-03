@@ -2,9 +2,10 @@ from sfdxUtilitesConstants import DUPLICATE_ARGUMENTS
 from ObjectMap import ObjectMap
 
 class Argument:
-    def __init__(this,name,shortName):
+    def __init__(this,name,shortName,inputStatement = None):
         this.name = name.lower()
         this.shortName = shortName.lower()
+        this.inputStatement = inputStatement
 
     def __eq__(this, __o: object) -> bool:
         if (this.shortName == __o.shortName) or (this.name == __o.name):
@@ -14,7 +15,9 @@ class Argument:
         return '--'+this.name+' -'+this.shortName
 
     def askInput(this):
-        return input('Enter '+this.name+' :\n')
+        if (this.inputStatement == None):
+            return input('Enter '+this.name+' :\n')
+        return input(this.inputStatement)
 
 class Command:
 
