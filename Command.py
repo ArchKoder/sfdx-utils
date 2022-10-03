@@ -13,6 +13,9 @@ class Argument:
     def __repr__(this) -> str:
         return '--'+this.name+' -'+this.shortName
 
+    def askInput(this):
+        return input('Enter '+this.name+' :\n')
+
 class Command:
 
     def __init__(this,name,optionalArguments,compulsoryArguments) -> None:
