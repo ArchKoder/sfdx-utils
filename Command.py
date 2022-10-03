@@ -2,10 +2,11 @@ from sfdxUtilitesConstants import DUPLICATE_ARGUMENTS
 from ObjectMap import ObjectMap
 
 class Argument:
-    def __init__(this,name,shortName,inputStatement = None):
+    def __init__(this,name,shortName, **kwargs):
         this.name = name.lower()
         this.shortName = shortName.lower()
-        this.inputStatement = inputStatement
+        this.inputStatement = kwargs.get('inputStatement',None)
+        this.nonVerboseInput = kwargs.get(nonVerboseInput,None)
 
     def __eq__(this, __o: object) -> bool:
         if (this.shortName == __o.shortName) or (this.name == __o.name):
@@ -18,6 +19,12 @@ class Argument:
         if (this.inputStatement == None):
             return input('Enter '+this.name+' :\n')
         return input(this.inputStatement)
+
+    def verboseInput(this):
+        if this.nonVerboseInput != None:
+            return this.nonVerboseInput()
+        return None
+
 
 class Command:
 
@@ -62,4 +69,10 @@ class Command:
         for arguments in this.getVerboseCommands():
             this.valueMap.set(arguments,arguments.askInput())
 
-    
+    def getNonVerboseArguments(this):
+        nonVerboseArguements = set()
+        for arguments in this.
+
+    def generateCommandString(this):
+        this.askVerboseInputs()
+
