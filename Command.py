@@ -45,8 +45,21 @@ class Command:
                 this.valueMap.pop(k)
 
     def getVerboseStatus(this):
+        if(len(this.gerVerboseCommands) == 0):
+            return False
+        return True
+
+    def gerVerboseCommands(this):
+        verboseCommands = set()
         for argument in this.compulsoryArguments:
             if(this.valueMap.get(argument,None)==None):
-                return True
-        return False
+                verboseCommands.add(argument)
 
+        return verboseCommands
+
+
+    def askVerboseInputs(this):
+        for arguments in this.getVerboseCommands():
+            this.valueMap.set(arguments,arguments.askInput())
+
+    
