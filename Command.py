@@ -6,24 +6,19 @@ class Argument:
         this.name = name.lower()
         this.shortName = shortName.lower()
         this.inputStatement = kwargs.get('inputStatement',None)
-        this.nonVerboseInput = kwargs.get(nonVerboseInput,None)
 
     def __eq__(this, __o: object) -> bool:
         if (this.shortName == __o.shortName) or (this.name == __o.name):
             return True
 
     def __repr__(this) -> str:
-        return '--'+this.name+' -'+this.shortName
+        return '--'+this.name
 
     def askInput(this):
         if (this.inputStatement == None):
             return input('Enter '+this.name+' :\n')
         return input(this.inputStatement)
 
-    def verboseInput(this):
-        if this.nonVerboseInput != None:
-            return this.nonVerboseInput()
-        return None
 
 
 class Command:
@@ -66,13 +61,27 @@ class Command:
 
 
     def askVerboseInputs(this):
-        for arguments in this.getVerboseCommands():
-            this.valueMap.set(arguments,arguments.askInput())
+        for argument in this.getVerboseCommands():
+            this.valueMap.set(argument,argument.askInput())
 
     def getNonVerboseArguments(this):
         nonVerboseArguements = set()
-        for arguments in this.
+        for argument in this.optionalArguments:
+            if this.valueMap.get(argument,None) == None:
+                nonVerboseArguements.add(argument)
+        return nonVerboseArguements
+
+    def populateNonVerboseArguments(this):
+        nonVerboseArguments = this.getNonVerboseArguments()
+        for argument in nonVerboseArguments:
+            this.valueMap.set(argument,argument.populateNonVerboseInput())
 
     def generateCommandString(this):
         this.askVerboseInputs()
+        this.populateNonVerboseArguments()
 
+        cmnd = this.name
+        for k,v in this.valueMap.items():
+            value = ' "'+v+'"'
+            cmnd += k+value
+        return cmnd
