@@ -23,3 +23,6 @@ class ObjectMap:
         for k,v in this.map.items():
             map+= k+' ==> '+str(v)
         return map
+
+    def items(this):
+        return this.map.items()
