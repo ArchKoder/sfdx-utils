@@ -2,9 +2,10 @@ from sfdxUtilitesConstants import DUPLICATE_ARGUMENTS
 from ObjectMap import ObjectMap
 
 class Argument:
-    def __init__(this,name,shortName, **kwargs):
+    def __init__(this,name, **kwargs):
         this.name = name.lower()
-        this.shortName = shortName.lower()
+        this.shortName = kwargs.get('shortName',None)
+        this.shortName = this.shortName.lower() if this.shortName != None else ''
         this.inputStatement = kwargs.get('inputStatement',None)
 
     def __eq__(this, __o: object) -> bool:
@@ -24,8 +25,8 @@ class Argument:
 class Command:
 
     def __init__(this,name,optionalArguments,compulsoryArguments) -> None:
-        this.optionalArguments = set(optionalArguments)
-        this.compulsoryArguments = set(compulsoryArguments)
+        this.optionalArguments = optionalArguments
+        this.compulsoryArguments = compulsoryArguments
         this.valueMap = ObjectMap()
         this.initializeValueMap()
         this.name = name.lower()
@@ -52,23 +53,24 @@ class Command:
         return True
 
     def gerVerboseCommands(this):
-        verboseCommands = set()
+        verboseCommands = list()
         for argument in this.compulsoryArguments:
             if(this.valueMap.get(argument,None)==None):
-                verboseCommands.add(argument)
+                verboseCommands.append(argument)
 
         return verboseCommands
 
 
     def askVerboseInputs(this):
-        for argument in this.getVerboseCommands():
+        for argument in this.getNonVerboseArguments():
             this.valueMap.set(argument,argument.askInput())
 
     def getNonVerboseArguments(this):
-        nonVerboseArguements = set()
+        nonVerboseArguements = list()
         for argument in this.optionalArguments:
             if this.valueMap.get(argument,None) == None:
-                nonVerboseArguements.add(argument)
+                nonVerboseArguements.append(argument)
+        print(nonVerboseArguements)
         return nonVerboseArguements
 
     def populateNonVerboseArguments(this):
@@ -83,5 +85,14 @@ class Command:
         cmnd = this.name
         for k,v in this.valueMap.items():
             value = ' "'+v+'"'
-            cmnd += k+value
+            cmnd += ' '+k+value
         return cmnd
+
+targetUsernameArg = Argument('targetusername',shortName = 'u',inputStatement='A username or alias for the target org. Overrides the default target org.')
+manifestArg = Argument('manifest',shortName = 'x',inputStatement = 'file that specifies the components to deploy')
+
+deployCommand = Command('sfdx force:source:deploy',[targetUsernameArg],[manifestArg])
+deployCommand.valueMap.set(manifestArg,'manifest/asdf.xml')
+deployCommand.valueMap.set(targetUsernameArg,'15Sep')
+
+print(deployCommand.generateCommandString())
