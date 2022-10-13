@@ -2,6 +2,13 @@ from sfdxUtilitesConstants import DUPLICATE_ARGUMENTS
 from ObjectMap import ObjectMap
 from subprocess import run
 
+from sfdxUtilitesConstants import TARGETUSERNAME
+from sfdxUtilitesConstants import ENTER_TARGETUSERNAME
+from sfdxUtilitesConstants import FILE_TYPE_JSON
+from sfdxUtilitesConstants import FORCE_ORG_DISPLAY
+from sfdxUtilitesConstants import SFDX
+
+from utilities import getDefaultOrg
 class Argument:
     def __init__(this,name, **kwargs):
         this.name = name.lower()
@@ -63,7 +70,7 @@ class Command:
 
 
     def askVerboseInputs(this):
-        for argument in this.getNonVerboseArguments():
+        for argument in this.gerVerboseCommands():
             this.valueMap.set(argument,argument.askInput())
 
     def getNonVerboseArguments(this):
@@ -83,10 +90,17 @@ class Command:
         this.askVerboseInputs()
         this.populateNonVerboseArguments()
 
-        cmnd = this.name
+        cmnd = SFDX+' '+this.name
         for k,v in this.valueMap.items():
-            value = ' "'+v+'"'
-            cmnd += ' '+k+value
+            k = ' '+k
+
+            if isinstance(v,bool):
+                if v:
+                    cmnd += k
+            else:
+                value = ' "'+v+'"'
+                cmnd += k+value
+
         return cmnd
 
     def run(this,shell = True):
@@ -98,12 +112,16 @@ class Flag(Argument):
         super().__init__(name, **kwargs)
         this.set = bool(kwargs.get('default',False))
 
+    def askInput(this):
+        this.populateNonVerboseInput()
 
-targetUsernameArg = Argument('targetusername',shortName = 'u',inputStatement='A username or alias for the target org. Overrides the default target org.')
-manifestArg = Argument('manifest',shortName = 'x',inputStatement = 'file that specifies the components to deploy')
+    def populateNonVerboseInput(this):
+        return this.set
 
-deployCommand = Command('sfdx force:source:deploy',[targetUsernameArg],[manifestArg])
-deployCommand.valueMap.set(manifestArg,'manifest/asdf.xml')
-deployCommand.valueMap.set(targetUsernameArg,'15Sep')
+jsonFlag = Flag(FILE_TYPE_JSON, default = True)
 
-print(deployCommand.generateCommandString())
+targetusernameArg = Argument(TARGETUSERNAME,shortName = 'u',inputStatement=ENTER_TARGETUSERNAME)
+targetusernameArg.populateNonVerboseInput = getDefaultOrg
+
+orgDisplayCmnd = Command(FORCE_ORG_DISPLAY, [jsonFlag,targetusernameArg], [])
+print(orgDisplayCmnd.generateCommandString())
