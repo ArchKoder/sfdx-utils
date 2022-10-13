@@ -96,7 +96,7 @@ class Command:
 class Flag(Argument):
     def __init__(this, name, **kwargs):
         super().__init__(name, **kwargs)
-        this.set = kwargs.get('default',False)
+        this.set = bool(kwargs.get('default',False))
 
 
 targetUsernameArg = Argument('targetusername',shortName = 'u',inputStatement='A username or alias for the target org. Overrides the default target org.')
