@@ -19,17 +19,19 @@ SFDX="sfdx"
 FORCE_SOURCE_RETRIEVE = 'force:source:retrieve'
 FORCE_SOURCE_DEPLOY = 'force:source:deploy'
 FORCE_APEX_EXECUTE = 'force:apex:execute'
+FORCE_ORG_DISPLAY = 'force:org:display'
 
 MANIFEST = '--manifest'
-TARGETUSERNAME = '--targetusername'
+TARGETUSERNAME = 'targetusername'
 APEX_CODE_FILE = '--apexcodefile'
 
 SFDX_CONFIG_JSON_DEFAULTUSERNAME='defaultusername'
 
-ORG_USERNAME_ALIAS = 'Enter username or alias for org: '
+ENTER_TARGETUSERNAME = 'Enter username or alias for the target org. This overrides the default target org:'
 
 INVALID_PATH = 'Invalid path for file or file not found'
 INVALID_FILE_FORMAT = 'Invalid or unsupported format for the file'
 DUPLICATE_ARGUMENTS = 'Duplicate arguments provided'
 
 OBJECT_API_NAME = 'objectApiName'
+
