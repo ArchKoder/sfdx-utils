@@ -1,5 +1,6 @@
 from sfdxUtilitesConstants import DUPLICATE_ARGUMENTS
 from ObjectMap import ObjectMap
+from subprocess import run
 
 class Argument:
     def __init__(this,name, **kwargs):
@@ -87,6 +88,12 @@ class Command:
             value = ' "'+v+'"'
             cmnd += ' '+k+value
         return cmnd
+
+    def run(this,shell = True):
+        run(this.generateCommandString(),shell)
+
+    
+
 
 targetUsernameArg = Argument('targetusername',shortName = 'u',inputStatement='A username or alias for the target org. Overrides the default target org.')
 manifestArg = Argument('manifest',shortName = 'x',inputStatement = 'file that specifies the components to deploy')
