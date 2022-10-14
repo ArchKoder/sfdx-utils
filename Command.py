@@ -139,4 +139,4 @@ targetusernameArg = Argument(TARGETUSERNAME,shortName = 'u',inputStatement=ENTER
 targetusernameArg.populateNonVerboseInput = getDefaultOrg
 
 orgDisplayCmnd = Command(FORCE_ORG_DISPLAY, [jsonFlag,targetusernameArg], [])
-forceSourceDeployCmnd = Command(FORCE_SOURCE_DEPLOY, [jsonFlag,targetusernameArg,])
+forceSourceDeployCmnd = Command(FORCE_SOURCE_DEPLOY, [jsonFlag,targetusernameArg,manifestArg])
