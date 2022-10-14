@@ -50,11 +50,14 @@ class Command:
 
 
     def setArguments(this, arguments2ValueMap):
-        for k,v in arguments2ValueMap:
+        for k,v in this.valueMap.items():
+            """
             if v != None:
                 this.valueMap.set(k,v)
             else:
                 this.valueMap.pop(k)
+            """
+            this.valueMap.set(k,arguments2ValueMap.get(k,None))
 
     def getVerboseStatus(this):
         if(len(this.gerVerboseCommands) == 0):
@@ -79,7 +82,6 @@ class Command:
         for argument in this.optionalArguments:
             if this.valueMap.get(argument,None) == None:
                 nonVerboseArguements.append(argument)
-        print(nonVerboseArguements)
         return nonVerboseArguements
 
     def populateNonVerboseArguments(this):
@@ -104,8 +106,10 @@ class Command:
 
         return cmnd
 
-    def run(this,shell = True):
-        run(this.generateCommandString(),shell)
+    def run(this, **kwargs):
+        shell = kwargs.get('shell',True)
+        capture_output = kwargs.get('capture_output',False)
+        run(this.generateCommandString(),shell = shell, capture_output= capture_output)
 
     
 class Flag(Argument):
@@ -125,4 +129,3 @@ targetusernameArg = Argument(TARGETUSERNAME,shortName = 'u',inputStatement=ENTER
 targetusernameArg.populateNonVerboseInput = getDefaultOrg
 
 orgDisplayCmnd = Command(FORCE_ORG_DISPLAY, [jsonFlag,targetusernameArg], [])
-print(orgDisplayCmnd.generateCommandString())
