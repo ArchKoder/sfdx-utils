@@ -16,7 +16,7 @@ MANIFEST_MEMBERS_CLOSE='</members>'
 MANIFEST_API_VERSION_53='<version>53.0</version>'
 
 SFDX="sfdx"
-FORCE_SOURCE_RETRIEVE = 'force:source:retrieve'
+FORCE_SOURCE_RETRIEVE = 'sfdx force:source:retrieve'
 FORCE_SOURCE_DEPLOY = 'sfdx force:source:deploy'
 FORCE_APEX_EXECUTE = 'force:apex:execute'
 FORCE_ORG_DISPLAY = 'sfdx force:org:display'
