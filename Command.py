@@ -1,15 +1,20 @@
-from sfdxUtilitesConstants import DUPLICATE_ARGUMENTS
 from ObjectMap import ObjectMap
 from subprocess import run
 
-from sfdxUtilitesConstants import TARGETUSERNAME
+from sfdxUtilitesConstants import DUPLICATE_ARGUMENTS
+from sfdxUtilitesConstants import ENTER_MANIFEST
 from sfdxUtilitesConstants import ENTER_TARGETUSERNAME
 from sfdxUtilitesConstants import FILE_TYPE_JSON
+from sfdxUtilitesConstants import FILE_TYPE_XML
 from sfdxUtilitesConstants import FORCE_ORG_DISPLAY
-from sfdxUtilitesConstants import SFDX
+from sfdxUtilitesConstants import FORCE_SOURCE_DEPLOY
 from sfdxUtilitesConstants import JSON_OUTPUT
+from sfdxUtilitesConstants import MANIFEST
+from sfdxUtilitesConstants import TARGETUSERNAME
 
 from utilities import getDefaultOrg
+from utilities import getManifestDir
+from utilities import getLastModifiedFileName
 class Argument:
     def __init__(this,name, **kwargs):
         this.name = name.lower()
@@ -93,7 +98,7 @@ class Command:
         this.askVerboseInputs()
         this.populateNonVerboseArguments()
 
-        cmnd = SFDX+' '+this.name
+        cmnd = this.name
         for k,v in this.valueMap.items():
             k = ' '+k
 
@@ -128,7 +133,10 @@ class Flag(Argument):
 
 jsonFlag = Flag(FILE_TYPE_JSON, default = True , inputStatement = JSON_OUTPUT)
 
+manifestArg = Argument(MANIFEST, shortName = 'x', inputStatement = ENTER_MANIFEST)
+manifestArg.populateNonVerboseInput = getLastModifiedFileName(getManifestDir(),FILE_TYPE_XML)
 targetusernameArg = Argument(TARGETUSERNAME,shortName = 'u',inputStatement=ENTER_TARGETUSERNAME)
 targetusernameArg.populateNonVerboseInput = getDefaultOrg
 
 orgDisplayCmnd = Command(FORCE_ORG_DISPLAY, [jsonFlag,targetusernameArg], [])
+forceSourceDeployCmnd = Command(FORCE_SOURCE_DEPLOY, [jsonFlag,targetusernameArg,])
