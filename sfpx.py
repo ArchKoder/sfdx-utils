@@ -1,39 +1,44 @@
-from sfdxUtilitesConstants import ORG_USERNAME_ALIAS
 from sfdxUtilitesConstants import FILE_TYPE_XML
 from sfdxUtilitesConstants import FILE_TYPE_JSON
 from sfdxUtilitesConstants import OBJECT_API_NAME
+
 from utilities import getLastModifiedFileName
 from utilities import getManifestDir
 from utilities import getDefaultOrg
 from utilities import validateFilePaths
 from utilities import assertFormat
 from utilities import pandasImportHelper
+
 from sfdxCommandFunctions import forceSourceDeploy
 from sfdxCommandFunctions import forceSourceRetrieve
+
 from subprocess import run
 from os import getcwd
 from argparse import ArgumentParser
 from os.path import exists
 from json import load
+
+from Command import jsonFlag
+from Command import targetusernameArg
+from Command import orgDisplayCmnd
 class SFPXController:
-    def __init__(this,projectDir) -> None:
+    def __init__(this,projectDir,args) -> None:
         this.projectDir = projectDir
+        this.args = args
 
     def deployManifest(this,verbose=False):
         if(verbose):
-            username = input(ORG_USERNAME_ALIAS)
+            username = input('ORG_USERNAME_ALIAS')
         else:
             username = getDefaultOrg(this.projectDir)
-        print(username)
         targetDir = getManifestDir(this.projectDir)
-        print(targetDir)
         lastModifiedManifest = getLastModifiedFileName(targetDir,FILE_TYPE_XML)
         cmnd = forceSourceDeploy(username,targetDir+lastModifiedManifest)
         run(cmnd,shell=True)
 
     def retrieveManifest(this,verbose=False):
         if(verbose):
-            username = input(ORG_USERNAME_ALIAS)
+            username = input('ORG_USERNAME_ALIAS')
         else:
             username = getDefaultOrg(this.projectDir)
         targetDir = getManifestDir(this.projectDir)
@@ -41,42 +46,47 @@ class SFPXController:
         cmnd = forceSourceRetrieve(username,targetDir+lastModifiedManifest)
         run(cmnd,shell=True)
 
-    def scriptifyFlatFile(this,verbose = False):
-        filePath = input('Enter path for flat file: ')
-        filePath = validateFilePaths(filePath)
+    def bulkInsert(this):
+        orgInformation = this.displayOrg()
+        print(orgInformation)
 
-        configFilePath = input('Enter paht for config file: ')
-        configFilePath = validateFilePaths(configFilePath)
-        assertFormat(configFilePath,FILE_TYPE_JSON)
-        configFile = open(configFilePath, 'r')
-        configFileJson = load(configFile)
-        configFile.close()
-
-        objectApiName = configFileJson[OBJECT_API_NAME]
-        contentDataFrame = pandasImportHelper(filePath)
-        fields = contentDataFrame.columns
-        field2type = dict()
-
-        for field in fields:
-            field2type = 
+    def displayOrg(this):
+        orgDisplayCmnd.setArguments(args)
+        orgInformation = orgDisplayCmnd.run(captureoutput = True, shell = True)
+        return orgInformation
 
 
 if __name__ == "__main__":
     cli = ArgumentParser()
+    arguments = [targetusernameArg]
+    commands = [orgDisplayCmnd]
+    flags = [jsonFlag]
+
     cli.add_argument("operation",help="base sfdx operation to be invoked")
-    cli.add_argument("-v","--verbose",help="specifying it runs operation in verbose mode",action="store_true")
-    cli.add_argument("-p","--projectDir", help = "specify path to sfdx project instead of current working directory")
-    args = cli.parse_args()
-    if(args.projectDir == None):
-        args.projectDir = getcwd()
+
+    for argument in arguments:
+        cli.add_argument('-'+argument.shortName, str(argument), help= argument.inputStatement)
+
+    for flag in flags:
+        if flag.set == True:
+            action = "store_true"
+        else:
+            action = "store_false"
+        cli.add_argument('-'+flag.shortName, str(flag),action = action)
+
+    args = vars(cli.parse_args())
+
+    projectDir = getcwd()
     try:
-        sfpxController = SFPXController(args.projectDir)
+        sfpxController = SFPXController(projectDir, args)
     except:
         raise Exception('Invalid path for sfdx operation')
-    operationToFunctionMap={
-        'deploy':sfpxController.deployManifest,
-        'retrieve':sfpxController.retrieveManifest
-    }
 
-    operation = operationToFunctionMap[args.operation]
-    operation(args.verbose)
+    operation2FunctionMap={
+        'deploy':sfpxController.deployManifest,
+        'retrieve':sfpxController.retrieveManifest,
+        'bulkInsert':sfpxController.bulkInsert,
+        'displayOrg':sfpxController.displayOrg
+    }
+    operation = operation2FunctionMap[args['operation']]    
+    operation()
