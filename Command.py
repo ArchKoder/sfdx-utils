@@ -7,6 +7,7 @@ from sfdxUtilitesConstants import ENTER_TARGETUSERNAME
 from sfdxUtilitesConstants import FILE_TYPE_JSON
 from sfdxUtilitesConstants import FORCE_ORG_DISPLAY
 from sfdxUtilitesConstants import SFDX
+from sfdxUtilitesConstants import JSON_OUTPUT
 
 from utilities import getDefaultOrg
 class Argument:
@@ -118,7 +119,7 @@ class Flag(Argument):
     def populateNonVerboseInput(this):
         return this.set
 
-jsonFlag = Flag(FILE_TYPE_JSON, default = True)
+jsonFlag = Flag(FILE_TYPE_JSON, default = True , inputStatement = JSON_OUTPUT)
 
 targetusernameArg = Argument(TARGETUSERNAME,shortName = 'u',inputStatement=ENTER_TARGETUSERNAME)
 targetusernameArg.populateNonVerboseInput = getDefaultOrg
