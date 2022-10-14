@@ -20,6 +20,7 @@ from pandas import read_csv as readCsv
 from pandas import read_excel as readExcel
 from os.path import exists
 from pathlib import Path
+from pathlib import PurePath
 
 def isFileTypeCorrect(filename,fileType):
     try:
@@ -217,3 +218,8 @@ def assertFormat(file,formalFormat):
     actualFormat = fileFormat(file)
     if(actualFormat != formalFormat):
         raise Exception(INVALID_FILE_FORMAT)
+
+def combinePaths(paths):
+    pathlibPaths = [Path(path) for path in paths]
+    path = PurePath(*pathlibPaths)
+    return path
