@@ -109,7 +109,10 @@ class Command:
     def run(this, **kwargs):
         shell = kwargs.get('shell',True)
         capture_output = kwargs.get('capture_output',False)
-        run(this.generateCommandString(),shell = shell, capture_output= capture_output)
+        if not capture_output:
+            run(this.generateCommandString(),shell = shell, capture_output= capture_output)
+        else:
+            return run(this.generateCommandString(),shell = shell, capture_output= capture_output, text = True)
 
     
 class Flag(Argument):
