@@ -13,10 +13,11 @@ from sfdxCommandFunctions import forceSourceDeploy
 from sfdxCommandFunctions import forceSourceRetrieve
 
 from subprocess import run
-from os import getcwd
+from os import access, getcwd
 from argparse import ArgumentParser
 from os.path import exists
 from json import load
+from json import loads
 
 from Command import jsonFlag
 from Command import targetusernameArg
@@ -47,12 +48,18 @@ class SFPXController:
         run(cmnd,shell=True)
 
     def bulkInsert(this):
-        orgInformation = this.displayOrg()
-        print(orgInformation)
+        def getAccessToken(orgInformation):
+            output = orgInformation.stdout
+            output = loads(output).get('result')
+            accessToken = output.get('accessToken')
+            return accessToken
+
+        accessToken = getAccessToken(this.displayOrg())
+        print(accessToken)
 
     def displayOrg(this):
         orgDisplayCmnd.setArguments(args)
-        orgInformation = orgDisplayCmnd.run(captureoutput = True, shell = True)
+        orgInformation = orgDisplayCmnd.run(capture_output = True, shell = True)
         return orgInformation
 
 
