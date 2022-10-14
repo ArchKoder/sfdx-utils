@@ -28,6 +28,7 @@ APEX_CODE_FILE = '--apexcodefile'
 SFDX_CONFIG_JSON_DEFAULTUSERNAME='defaultusername'
 
 ENTER_TARGETUSERNAME = 'Enter username or alias for the target org. This overrides the default target org:'
+JSON_OUTPUT = 'Obtain output as JSON?'
 
 INVALID_PATH = 'Invalid path for file or file not found'
 INVALID_FILE_FORMAT = 'Invalid or unsupported format for the file'
