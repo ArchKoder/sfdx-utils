@@ -5,11 +5,7 @@ from sfdxUtilitesConstants import OBJECT_API_NAME
 from utilities import getLastModifiedFileName
 from utilities import getManifestDir
 from utilities import getDefaultOrg
-from utilities import validateFilePaths
-from utilities import assertFormat
-from utilities import pandasImportHelper
 
-from sfdxCommandFunctions import forceSourceDeploy
 from sfdxCommandFunctions import forceSourceRetrieve
 
 from subprocess import run
@@ -22,12 +18,16 @@ from json import loads
 from Command import jsonFlag
 from Command import targetusernameArg
 from Command import orgDisplayCmnd
+from Command import forceSourceDeployCmnd
 class SFPXController:
     def __init__(this,projectDir,args) -> None:
         this.projectDir = projectDir
         this.args = args
 
     def deployManifest(this,verbose=False):
+        forceSourceDeployCmnd.setArguments(args)
+        forceSourceDeployCmnd.run()
+        """
         if(verbose):
             username = input('ORG_USERNAME_ALIAS')
         else:
@@ -36,6 +36,7 @@ class SFPXController:
         lastModifiedManifest = getLastModifiedFileName(targetDir,FILE_TYPE_XML)
         cmnd = forceSourceDeploy(username,targetDir+lastModifiedManifest)
         run(cmnd,shell=True)
+        """
 
     def retrieveManifest(this,verbose=False):
         if(verbose):
