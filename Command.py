@@ -8,6 +8,7 @@ from sfdxUtilitesConstants import FILE_TYPE_JSON
 from sfdxUtilitesConstants import FILE_TYPE_XML
 from sfdxUtilitesConstants import FORCE_ORG_DISPLAY
 from sfdxUtilitesConstants import FORCE_SOURCE_DEPLOY
+from sfdxUtilitesConstants import FORCE_SOURCE_RETRIEVE
 from sfdxUtilitesConstants import JSON_OUTPUT
 from sfdxUtilitesConstants import MANIFEST
 from sfdxUtilitesConstants import TARGETUSERNAME
@@ -57,12 +58,6 @@ class Command:
 
     def setArguments(this, arguments2ValueMap):
         for k,v in this.valueMap.items():
-            """
-            if v != None:
-                this.valueMap.set(k,v)
-            else:
-                this.valueMap.pop(k)
-            """
             this.valueMap.set(k,arguments2ValueMap.get(k,None))
 
     def getVerboseStatus(this):
@@ -148,3 +143,4 @@ targetusernameArg.populateNonVerboseInput = getDefaultOrg
 
 orgDisplayCmnd = Command(FORCE_ORG_DISPLAY, [jsonFlag,targetusernameArg], [])
 forceSourceDeployCmnd = Command(FORCE_SOURCE_DEPLOY, [jsonFlag,targetusernameArg,manifestArg],[])
+forceSourceRetrieveCmnd = Command(FORCE_SOURCE_RETRIEVE, [jsonFlag,targetusernameArg,manifestArg],[])
