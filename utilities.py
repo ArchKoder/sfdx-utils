@@ -4,7 +4,7 @@ from os import getcwd
 from os import walk
 from json import load
 from turtle import left
-from sfdxUtilitesConstants import FILE_TYPE_XML, MANIFEST_XML
+from sfdxUtilitesConstants import FILE_TYPE_XML, MANIFEST_XML, FILE_TYPE_CSV,FILE_TYPE_XLSX
 from sfdxUtilitesConstants import MANIFEST_PACKAGE
 from sfdxUtilitesConstants import MANIFEST_PACKAGE_CLOSE
 from sfdxUtilitesConstants import MANIFEST_TYPES
@@ -13,8 +13,14 @@ from sfdxUtilitesConstants import MANIFEST_API_VERSION_53
 from sfdxUtilitesConstants import MANIFEST_MEMBERS
 from sfdxUtilitesConstants import MANIFEST_NAME
 from sfdxUtilitesConstants import SFDX_CONFIG_JSON_DEFAULTUSERNAME
+from sfdxUtilitesConstants import INVALID_PATH
+from sfdxUtilitesConstants import INVALID_FILE_FORMAT
 from pandas import DataFrame
+from pandas import read_csv as readCsv
+from pandas import read_excel as readExcel
+from os.path import exists
 from pathlib import Path
+from pathlib import PurePath
 
 def isFileTypeCorrect(filename,fileType):
     try:
@@ -174,9 +180,46 @@ def safeIntegerConverter(value):
     except:
         return str(value)
 
-def validPath(path):
+def validateFilePaths(file):
+    """checks if given path is a valid file Path"""
     try:
-        Path(path).resolve()
-        return True
+        filePath = Path(file)
+        return filePath.is_file()
     except:
         return False
+
+
+def fileFormat(file):
+    """returns file format for given path."""
+    if not validateFilePaths(file):
+        raise Exception(INVALID_PATH)
+    else:
+        fileSplits = file.split('.')
+        if(len(fileSplits)<2):
+            raise Exception(INVALID_FILE_FORMAT)
+        else:
+            format = str(fileSplits[-1]).lower()
+            return format
+
+def pandasImportHelper(file):
+    format2Importer = {
+        FILE_TYPE_CSV : readCsv,
+        FILE_TYPE_XLSX : readExcel
+    }
+
+    importer = format2Importer.get(fileFormat(file),None)
+    if(importer == None):
+        raise Exception(INVALID_FILE_FORMAT)
+    else:
+        return importer(file)
+
+
+def assertFormat(file,formalFormat):
+    actualFormat = fileFormat(file)
+    if(actualFormat != formalFormat):
+        raise Exception(INVALID_FILE_FORMAT)
+
+def combinePaths(paths):
+    pathlibPaths = [Path(path) for path in paths]
+    path = PurePath(*pathlibPaths)
+    return path
