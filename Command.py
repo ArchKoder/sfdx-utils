@@ -15,6 +15,7 @@ from sfdxUtilitesConstants import TARGETUSERNAME
 from utilities import getDefaultOrg
 from utilities import getManifestDir
 from utilities import getLastModifiedFileName
+from utilities import combinePaths
 class Argument:
     def __init__(this,name, **kwargs):
         this.name = name.lower()
@@ -112,6 +113,7 @@ class Command:
         return cmnd
 
     def run(this, **kwargs):
+        print(this.generateCommandString())
         shell = kwargs.get('shell',True)
         capture_output = kwargs.get('capture_output',False)
         if not capture_output:
@@ -134,9 +136,15 @@ class Flag(Argument):
 jsonFlag = Flag(FILE_TYPE_JSON, default = True , inputStatement = JSON_OUTPUT)
 
 manifestArg = Argument(MANIFEST, shortName = 'x', inputStatement = ENTER_MANIFEST)
-manifestArg.populateNonVerboseInput = getLastModifiedFileName(getManifestDir(),FILE_TYPE_XML)
+def lastModifiedManifest():
+    manifestDir = getManifestDir()
+    latestManifestFile = getLastModifiedFileName(manifestDir,FILE_TYPE_XML)
+    latestManifestFile = combinePaths([manifestDir,latestManifestFile])
+    print(latestManifestFile)
+    return str(latestManifestFile)
+manifestArg.populateNonVerboseInput = lastModifiedManifest
 targetusernameArg = Argument(TARGETUSERNAME,shortName = 'u',inputStatement=ENTER_TARGETUSERNAME)
 targetusernameArg.populateNonVerboseInput = getDefaultOrg
 
 orgDisplayCmnd = Command(FORCE_ORG_DISPLAY, [jsonFlag,targetusernameArg], [])
-forceSourceDeployCmnd = Command(FORCE_SOURCE_DEPLOY, [jsonFlag,targetusernameArg,manifestArg])
+forceSourceDeployCmnd = Command(FORCE_SOURCE_DEPLOY, [jsonFlag,targetusernameArg,manifestArg],[])
