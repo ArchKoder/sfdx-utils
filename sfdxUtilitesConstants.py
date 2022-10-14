@@ -17,11 +17,11 @@ MANIFEST_API_VERSION_53='<version>53.0</version>'
 
 SFDX="sfdx"
 FORCE_SOURCE_RETRIEVE = 'force:source:retrieve'
-FORCE_SOURCE_DEPLOY = 'force:source:deploy'
+FORCE_SOURCE_DEPLOY = 'sfdx force:source:deploy'
 FORCE_APEX_EXECUTE = 'force:apex:execute'
-FORCE_ORG_DISPLAY = 'force:org:display'
+FORCE_ORG_DISPLAY = 'sfdx force:org:display'
 
-MANIFEST = '--manifest'
+MANIFEST = 'manifest'
 TARGETUSERNAME = 'targetusername'
 APEX_CODE_FILE = '--apexcodefile'
 
@@ -29,6 +29,7 @@ SFDX_CONFIG_JSON_DEFAULTUSERNAME='defaultusername'
 
 ENTER_TARGETUSERNAME = 'Enter username or alias for the target org. This overrides the default target org:'
 JSON_OUTPUT = 'Obtain output as JSON?'
+ENTER_MANIFEST = 'Enter the complete path for the manifest (Eg: package.xml) file that specifies the components to deploy:'
 
 INVALID_PATH = 'Invalid path for file or file not found'
 INVALID_FILE_FORMAT = 'Invalid or unsupported format for the file'
