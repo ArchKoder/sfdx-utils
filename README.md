@@ -18,7 +18,9 @@ This repo is about using python with terminals to speed up some frequent tasks u
 
 <ins>Near Future (on Priority) Enhancements</ins>:
 
-* Setting utilities up for each sfdx project is currently done by putting all py files in project's root directory. It has to be made infinitely easier by turning sfdx-utilities into a cli.
+* Complete bulkInsert operation to deploy flat files using bulk API 2.0
+
+* Re-write path methods using pathlib to make os portable
 
 * Add optimum and precise comments to already existing code.
 
