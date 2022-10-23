@@ -18,7 +18,7 @@ class BulkAPIHelper:
 
         for key,value in kwargs.items():
             if this.validateRequestProperty(key,value):
-                createRequestBody.put(key,value)
+                createRequestBody[key] = value
 
         
 
