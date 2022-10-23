@@ -37,3 +37,16 @@ DUPLICATE_ARGUMENTS = 'Duplicate arguments provided'
 
 OBJECT_API_NAME = 'objectApiName'
 
+PLATFORM_LINUX = 'linux'
+PLATFORM_OS_X = 'OS X'
+PLATFORM_WINDOWS = 'win32'
+
+OPERATION = 'operation'
+OPERATION_INSERT = 'insert'
+
+LINE_ENDING = 'lineEnding'
+ASSIGNMENT_RULE_ID = 'assignmentRuleId'
+OBJECT = 'object'
+COLUMN_DELIMITER = 'columnDelimiter'
+CONTENT_TYPE = 'ContentType'
+EXTERNAL_ID_FIELD_NAME = 'externalIdFieldName'
