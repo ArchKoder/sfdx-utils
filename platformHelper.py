@@ -17,17 +17,17 @@ class PlatformHelper:
 
         this.__lineEnding = None
     
-        @property
-        def lineEnding(this):
-            if this.__lineEnding == None:
-                platform2LineEnding = {
-                    PLATFORM_LINUX : 'LF',
-                    PLATFORM_OS_X : 'LF',
-                    PLATFORM_WINDOWS : 'CRLF'
-                }
-                this.__lineEnding = platform2LineEnding.get(this.platform,None)
-            return this.__lineEnding
+    @property
+    def lineEnding(this):
+        if this.__lineEnding == None:
+            platform2LineEnding = {
+                PLATFORM_LINUX : 'LF',
+                PLATFORM_OS_X : 'LF',
+                PLATFORM_WINDOWS : 'CRLF'
+            }
+            this.__lineEnding = platform2LineEnding.get(this.platform,None)
+        return this.__lineEnding
 
-        @property.setter
-        def lineEnding(this,value):
-            raise Exception('This property is os-dependant and can not be set')
+    @property.setter
+    def lineEnding(this,value):
+        raise Exception('This property is os-dependant and can not be set')
