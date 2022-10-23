@@ -1,8 +1,7 @@
 from platformHelper import PlatformHelper
 from sfdxUtilitesConstants import (ASSIGNMENT_RULE_ID, COLUMN_DELIMITER,
                                    CONTENT_TYPE, EXTERNAL_ID_FIELD_NAME,
-                                   LINE_ENDING, OBJECT, OBJECT_API_NAME,
-                                   OPERATION, OPERATION_INSERT)
+                                   LINE_ENDING, OBJECT, OPERATION)
 
 
 class BulkAPIHelper:
@@ -19,6 +18,7 @@ class BulkAPIHelper:
         for key,value in kwargs.items():
             if this.validateRequestProperty(key,value):
                 createRequestBody[key] = value
+
 
         
 
