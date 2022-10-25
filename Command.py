@@ -108,7 +108,6 @@ class Command:
         return cmnd
 
     def run(this, **kwargs):
-        print(this.generateCommandString())
         shell = kwargs.get('shell',True)
         capture_output = kwargs.get('capture_output',False)
         if not capture_output:
@@ -135,7 +134,6 @@ def lastModifiedManifest():
     manifestDir = getManifestDir()
     latestManifestFile = getLastModifiedFileName(manifestDir,FILE_TYPE_XML)
     latestManifestFile = combinePaths([manifestDir,latestManifestFile])
-    print(latestManifestFile)
     return str(latestManifestFile)
 manifestArg.populateNonVerboseInput = lastModifiedManifest
 targetusernameArg = Argument(TARGETUSERNAME,shortName = 'u',inputStatement=ENTER_TARGETUSERNAME)
