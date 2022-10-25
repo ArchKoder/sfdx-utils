@@ -1,3 +1,5 @@
+from requests import post
+
 from platformHelper import PlatformHelper
 from sfdxUtilitesConstants import (ASSIGNMENT_RULE_ID, COLUMN_DELIMITER,
                                    CONTENT_TYPE, EXTERNAL_ID_FIELD_NAME,
@@ -8,8 +10,17 @@ class BulkAPIHelper:
 
     def __init__(this,**kwargs):
         this.platformHelper = PlatformHelper()
+        this.sessionId = kwargs.get('sessionId')
+        this.domainName = kwargs.get('domainName')
 
     def createJob(this,**kwargs):
+        def generateHeader():
+            headers = {'Authorization': 'Bearer' + this.sessionId}
+            return headers
+
+        def generateURI():
+            uri = 'http://'+this.domainName+'.my.salesforce.com/services/data/v50.0/jobs/ingest'
+            return uri
 
         createRequestBody = {
             LINE_ENDING : this.platformHelper.lineEnding
@@ -19,6 +30,8 @@ class BulkAPIHelper:
             if this.validateRequestProperty(key,value):
                 createRequestBody[key] = value
 
+        createResponse = post(generateURI(),data = createRequestBody,headers=generateHeader())
+        return createResponse
 
         
 
@@ -34,3 +47,6 @@ class BulkAPIHelper:
 
         else:
             return False
+
+    def getSessionId(this):
+        pass
