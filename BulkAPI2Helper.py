@@ -11,15 +11,15 @@ class BulkAPIHelper:
     def __init__(this,**kwargs):
         this.platformHelper = PlatformHelper()
         this.sessionId = kwargs.get('sessionId')
-        this.domainName = kwargs.get('domainName')
+        this.instanceUrl = kwargs.get('instanceUrl')
 
     def createJob(this,**kwargs):
         def generateHeader():
-            headers = {'Authorization': 'Bearer' + this.sessionId}
+            headers = {'Authorization': 'Bearer ' + this.sessionId}
             return headers
 
         def generateURI():
-            uri = 'http://'+this.domainName+'.my.salesforce.com/services/data/v50.0/jobs/ingest'
+            uri = this.instanceUrl+'/services/data/v50.0/jobs/ingest/'
             return uri
 
         createRequestBody = {
@@ -31,7 +31,7 @@ class BulkAPIHelper:
                 createRequestBody[key] = value
 
         createResponse = post(generateURI(),data = createRequestBody,headers=generateHeader())
-        return createResponse
+        return createResponse.json()
 
         
 
