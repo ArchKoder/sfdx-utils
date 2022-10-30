@@ -28,6 +28,6 @@ class PlatformHelper:
             this.__lineEnding = platform2LineEnding.get(this.platform,None)
         return this.__lineEnding
 
-    @property.setter
+    @lineEnding.setter
     def lineEnding(this,value):
         raise Exception('This property is os-dependant and can not be set')
