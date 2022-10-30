@@ -20,6 +20,8 @@ from Command import targetusernameArg
 from Command import orgDisplayCmnd
 from Command import forceSourceDeployCmnd
 from Command import forceSourceRetrieveCmnd
+
+from BulkAPI2Helper import BulkAPIHelper
 class SFPXController:
     def __init__(this,projectDir,args) -> None:
         this.projectDir = projectDir
@@ -40,8 +42,18 @@ class SFPXController:
             accessToken = output.get('accessToken')
             return accessToken
 
-        accessToken = getAccessToken(this.displayOrg())
-        print(accessToken)
+        def getInstanceUrl(orgInformation):
+            output = orgInformation.stdout
+            output = loads(output).get('result')
+            instanceUrl = output.get('instanceUrl',None)
+            return instanceUrl
+        orgInformation = this.displayOrg()
+        accessToken = getAccessToken(orgInformation)
+        instanceUrl = getInstanceUrl(orgInformation)
+        bulkAPIHelper = BulkAPIHelper(sessionId = accessToken , instanceUrl = instanceUrl)
+        createJobResponseJson=bulkAPIHelper.createJob()
+        print(createJobResponseJson)
+
 
     def displayOrg(this):
         orgDisplayCmnd.setArguments(args)
